@@ -1,0 +1,25 @@
+{
+  "name": "social-network-api",
+  "version": "1.0.0",
+  "description": "Social Network API for JavaScript Course",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "build": "npx babel --presets @babel/preset-react ui/src --out-dir ui/js",
+    "app": "node ./api/app.js"
+  },
+  "author": {
+    "name": "Aharon Achildiev",
+    "email": "aharonach@gmail.com"
+  },
+  "dependencies": {
+    "express": "^4.17.2",
+    "http-status-codes": "^2.1.4",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.0",
+    "@babel/core": "^7.17.0",
+    "@babel/preset-react": "^7.16.7"
+  }
+}
