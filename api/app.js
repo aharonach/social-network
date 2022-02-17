@@ -12,7 +12,7 @@ function get_content_type_from_ext(url) {
 	const match = url.match( /\.([a-z]+)/i );
 	
 	if ( ! match ) {
-		if ( url === '/' ) {
+		if ( url.startsWith('/') && url.endsWith('/') ) {
 			return 'text/html';
 		}
 

@@ -14,7 +14,7 @@ class Alert extends React.Component {
     }
 
     render() {
-        if ( ! this.props.show ) {
+        if ( ! this.props.message ) {
             return null;
         }
 

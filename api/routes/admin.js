@@ -12,7 +12,7 @@ const main_router = express.Router(),
 main_router.use('/admin', auth.admin);
 
 router.get('/users', (req, res) => {
-    const user_arr = admin.get_users(req.body);
+    const user_arr = admin.get_users(helpers.query_or_body(req));
     helpers.handle_success(res, user_arr);
 });
 

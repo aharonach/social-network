@@ -1,18 +1,21 @@
+import * as requests from './helpers/requests.js';
+import * as cookies from './helpers/cookies.js';
 import Login from './Login.js';
 import NavBar from './NavBar.js';
 import Posts from './Posts/Posts.js';
 import Messages from './Messages/Messages.js';
+import ErrorBoundary from './ErrorBoundary.js';
 
 class App extends React.Component {
-    constructor( props ) {
-        super( props );
+    constructor(props) {
+        super(props);
 
         this.components = {
-            'Home':  {
+            'Home': {
                 component: Posts,
                 list: 'posts',
             },
-            'Messages':  {
+            'Messages': {
                 component: Messages,
                 list: 'messages',
             },
@@ -20,14 +23,14 @@ class App extends React.Component {
         };
 
         this.state = {
-            token: this.get_cookie('token'),
-            users: [],
             posts: [],
             messages: [],
+            user: null,
             current: 'Home',
         };
 
-        this.update_token = this.update_token.bind(this);
+        this.handle_login = this.handle_login.bind(this);
+        this.handle_logout = this.handle_logout.bind(this);
         this.update_page = this.update_page.bind(this);
         this.update_list = this.update_list.bind(this);
     }
@@ -36,34 +39,47 @@ class App extends React.Component {
         this.setState({ [name]: list });
     }
 
-    get_cookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-        return '';
-    }
-
-    update_token(token) {
-        this.setState({ token: token });
-    }
-
     update_page(page) {
         this.setState({ current: page });
     }
 
+    async handle_login(token) {
+        cookies.set('token', token);
+        
+        try {
+            const user = await requests.do_get('/api/user');
+            if (user.id) {
+                this.setState({ user: user });
+            }
+        } catch( e ) {
+            console.log(e.message);
+        }        
+    }
+
+    async handle_logout() {
+        const result = await requests.do_post('/api/logout');
+
+        if (result.success) {
+            cookies.set('token', '');
+            this.setState({ user: null, posts: [], messages: [] });
+        }
+    }
+
     render() {
-        if ( this.state.token ) {
+        if (this.state.user) {
             const Component = this.components[this.state.current].component;
             const list = this.components[this.state.current].list;
 
             return (
                 <main>
-                    <NavBar update_page={this.update_page} items={Object.keys(this.components)} update_token={this.update_token} />
-                    {Component ? <Component update_list={this.update_list} token={this.state.token} list={this.state[list]} /> : null}
+                    <NavBar user={this.state.user} update_page={this.update_page} items={Object.keys(this.components)} handle_logout={this.handle_logout} />
+                    <ErrorBoundary>
+                        {Component ? <Component user={this.state.user} update_list={this.update_list} list={this.state[list]} /> : null}
+                    </ErrorBoundary>
                 </main>
             );
         } else {
-            return <Login set_token={this.update_token} />;
+            return <Login handle_login={this.handle_login} />;
         }
     }
 }

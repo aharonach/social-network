@@ -59,7 +59,7 @@ router.get('/users', (req, res) => {
 
 router.get('/user/messages', (req, res) => {
     try {
-        const messages = users.get_user_messages(res.locals.user_id, req.body);
+        const messages = users.get_user_messages(res.locals.user_id, helpers.query_or_body(req));
         helpers.handle_success(res, messages);
     } catch(e) {
         helpers.handle_error(res, e, StatusCodes.BAD_REQUEST);
@@ -77,7 +77,7 @@ router.get('/user/messages/:id', (req, res) => {
 
 router.get('/user/posts', (req, res) => {
     try {
-        const posts_arr = get_user_posts(res.locals.user_id, req.body);
+        const posts_arr = get_user_posts(res.locals.user_id, helpers.query_or_body(req));
         helpers.handle_success(res, posts_arr);
     } catch(e) {
         helpers.handle_error(res, e, StatusCodes.BAD_REQUEST);
@@ -98,7 +98,7 @@ function message_user(req, res) {
         users.message_user( req.params.id, req.body.text, res.locals.user_id );
         helpers.handle_success(res, { success: true }, StatusCodes.CREATED);
     } catch (e) {
-        helpers.handle_error(res, e, StatusCodes.NOT_FOUND);
+        helpers.handle_error(res, e, e.message.includes('not found') ? StatusCodes.NOT_FOUND: StatusCodes.BAD_REQUEST);
     }
 }
 
@@ -107,7 +107,7 @@ router.put('/user/:id/message', message_user);
 
 router.get('/user/:id/posts', (req, res) => {
     try {
-        const posts_arr = get_user_posts(req.params.id, req.body);
+        const posts_arr = get_user_posts(req.params.id, helpers.query_or_body(req));
         helpers.handle_success(res, posts_arr);
     } catch (e) {
         helpers.handle_error(res, e, StatusCodes.NOT_FOUND);

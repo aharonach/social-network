@@ -1,3 +1,4 @@
+import * as requests from '../helpers/requests.js';
 import Post from './Post.js';
 import NewPost from './NewPost.js';
 
@@ -18,21 +19,16 @@ class Posts extends React.Component {
     }
 
     async fetch_posts() {
-		const response = await fetch('/api/posts?orderby=datetime&order=desc', {
-            headers: {
-                'Authorization': JSON.stringify({ token: this.props.token }) 
-            },
-        });
-        const data = await response.json();
+        const data = await requests.do_get('/api/posts?orderby=datetime&order=desc');
         return data?.error ? [] : data;
 	}
 
     render() {
         return (
             <>
-                <NewPost token={this.props.token} update={this.fetch_and_update} />
+                <NewPost update={this.fetch_and_update} />
                 <div className="cards">
-                    {this.props.list.map(item => <Post post={item} key={item.id} /> )}
+                    {this.props.list.map(item => <Post key={item.id} post={item} user={this.props.user} update={this.fetch_and_update} /> )}
                 </div>
             </>
         );

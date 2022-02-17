@@ -1,18 +1,24 @@
 import * as requests from '../helpers/requests.js';
 import Alert from '../Alert.js';
 
-class NewPost extends React.Component {
+class NewMessage extends React.Component {
     constructor(props) {
         super(props);
-        this.default_state = { 
+        this.default_state = {
+            users: [],
             text: '',
+            user: 0,
             error: '',
             success: '',
         };
-        this.state = Object.assign({}, this.default_state);
+        this.state = this.default_state;
 
         this.handle_change = this.handle_change.bind(this);
         this.handle_post = this.handle_post.bind(this);
+    }
+
+    async componentDidMount() {
+        this.setState({ users: await requests.do_get('/api/users') });
     }
 
     handle_change(e) {
@@ -22,11 +28,11 @@ class NewPost extends React.Component {
     async handle_post(e) {
         e.preventDefault();
 
-        const json = await requests.do_post('/api/posts', {
+        const json = await requests.do_post(`/api/user/${this.state.user}/message`, {
             text: this.state.text
         });
-        
-        this.setState(json?.error ? { error: json.error } : { ...this.default_state, success: 'Post submitted!' });
+
+        this.setState(json?.error ? { error: json.error } : { ...this.default_state, success: 'Message sent!' });
         this.props.update();
     }
 
@@ -48,6 +54,13 @@ class NewPost extends React.Component {
                         <textarea onChange={this.handle_change} name="text" id="text" placeholder="Submit a new post" value={this.state.text}></textarea>
                     </div>
                     <div className="form-control">
+                        <label htmlFor="text">Choose a user</label>
+                        <select name="user" onChange={this.handle_change} value={this.state.user}>
+                            <option value="0">Select...</option>
+                            {this.state.users.map(user => <option key={user.id} value={user.id}>{user.full_name}</option>)}
+                        </select>
+                    </div>
+                    <div className="form-control">
                         <button type="submit">Submit</button>
                     </div>
                 </form>
@@ -56,4 +69,4 @@ class NewPost extends React.Component {
     }
 }
 
-export default NewPost;
+export default NewMessage;

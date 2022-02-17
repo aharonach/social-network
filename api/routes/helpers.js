@@ -19,3 +19,7 @@ export function handle_success(res, data = { success: true }, status_code = Stat
 export function json(str) {
     return JSON.stringify(str);
 }
+
+export function query_or_body(req) {
+    return Object.keys(req.query).length !== 0 ? req.query : req.body;
+}

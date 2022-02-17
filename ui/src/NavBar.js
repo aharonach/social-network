@@ -1,7 +1,10 @@
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { token: '', user_role: '' };
+        
+        this.state = { 
+            user_role: '' 
+        };
 
         this.update_page = this.update_page.bind(this);
         this.logout = this.logout.bind(this);
@@ -12,7 +15,7 @@ class NavBar extends React.Component {
     }
 
     logout() {
-        this.props.update_token('');
+        this.props.handle_logout();
     }
 
     render() {

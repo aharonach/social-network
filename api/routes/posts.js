@@ -10,7 +10,7 @@ const router = express.Router();
 router.use('/posts', auth.user);
 
 router.get('/posts', (req, res) => {
-    const posts_arr = posts.get_posts(Object.keys(req.body).length === 0 ? req.query : req.body);
+    const posts_arr = posts.get_posts(helpers.query_or_body(req));
     helpers.handle_success(res, posts_arr);
 });
 

@@ -1,3 +1,5 @@
+import * as helpers from '../helpers/functions.js';
+import User from '../User.js';
 
 class Message extends React.Component {
     render() {
@@ -5,7 +7,8 @@ class Message extends React.Component {
 
         return (
             <div className="card">
-                <p><span>{message.date}</span></p>
+                <User id={message.from_id} />
+                <p><span>{helpers.date(message.datetime)}</span></p>
                 <p>{message.text}</p>
             </div>
         );
