@@ -1,19 +1,20 @@
 import * as requests from './helpers/requests.js';
 import * as cookies from './helpers/cookies.js';
 import Alert from './Alert.js';
+import Logo from './Logo.js';
 
 class Login extends React.Component {
+    state = {
+        login_or_register: 'login',
+        email: '', 
+        password: '',
+        full_name: '',
+        error: '',
+        message: '',
+    }
+
     constructor(props) {
         super(props);
-
-        this.state = {
-            login_or_register: 'login',
-            email: '', 
-            password: '',
-            full_name: '',
-            error: '',
-            message: '',
-        };
 
         this.handle_change = this.handle_change.bind(this);
         this.handle_click = this.handle_click.bind(this);
@@ -21,10 +22,11 @@ class Login extends React.Component {
         this.handle_register = this.handle_register.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const token = cookies.get('token');
+
         if ( token ) {
-            this.props.handle_login(token);
+            await this.props.handle_login(token);
         }
     }
 
@@ -82,7 +84,7 @@ class Login extends React.Component {
         return (
             <>
                 <h2>Login</h2>
-                <form onSubmit={this.handle_login} className="form">
+                <form onSubmit={this.handle_login}>
                     <div className="form-control">
                         <label htmlFor="email">Email</label>
                         <input onChange={this.handle_change} name="email" type="email" id="email" placeholder="user@domain.com" />
@@ -103,7 +105,7 @@ class Login extends React.Component {
         return (
             <>
                 <h2>Register</h2>
-                <form onSubmit={this.handle_register} className="form">
+                <form onSubmit={this.handle_register}>
                     <div className="form-control">
                         <label htmlFor="email">Email</label>
                         <input onChange={this.handle_change} name="email" type="email" id="email" placeholder="user@domain.com" />
@@ -134,9 +136,15 @@ class Login extends React.Component {
 
         return (
             <>
-                <Alert type={message_type} message={message} />
-                {this.is_login() ? this.render_login() : this.render_register()}
-                {this.render_link()}
+                <header>
+                    <Logo />
+                </header>
+                <main>
+                    {this.render_link()}
+                    <Alert type="error" message={this.props.error} />
+                    <Alert type={message_type} message={message} />
+                    {this.is_login() ? this.render_login() : this.render_register()}
+                </main>
             </>
         );
     }

@@ -2,22 +2,17 @@ import * as requests from '../helpers/requests.js';
 import Alert from '../Alert.js';
 
 class NewMessage extends React.Component {
+    state = {
+        text: '',
+        error: '',
+        success: '',
+    }
+
     constructor(props) {
         super(props);
-        this.default_state = {
-            text: '',
-            user: 0,
-            error: '',
-            success: '',
-        };
-        this.state = { ...this.default_state, users: [] };
 
         this.handle_change = this.handle_change.bind(this);
         this.handle_post = this.handle_post.bind(this);
-    }
-
-    async componentDidMount() {
-        this.setState({ users: await requests.do_get('/api/users') });
     }
 
     handle_change(e) {
@@ -27,12 +22,11 @@ class NewMessage extends React.Component {
     async handle_post(e) {
         e.preventDefault();
 
-        const json = await requests.do_post(`/api/user/${this.state.user}/message`, {
+        const json = await requests.do_post(`/api/admin/users/message`, {
             text: this.state.text
         });
 
-        this.setState(json?.error ? { error: json.error } : { ...this.default_state, success: 'Message sent!' });
-        this.props.update();
+        this.setState(json?.error ? { error: json.error } : { success: 'Message sent!' });
     }
 
     alert_type() {
@@ -47,17 +41,11 @@ class NewMessage extends React.Component {
         return (
             <>
                 <Alert type={this.alert_type()} message={this.alert_message()} />
+                <h2>Message all users</h2>
                 <form onSubmit={this.handle_post} className="form">
                     <div className="form-control">
                         <label htmlFor="text">Text</label>
                         <textarea onChange={this.handle_change} name="text" id="text" value={this.state.text}></textarea>
-                    </div>
-                    <div className="form-control">
-                        <label htmlFor="text">Choose a user</label>
-                        <select name="user" onChange={this.handle_change} value={this.state.user}>
-                            <option value="0">Select...</option>
-                            {this.state.users.map(user => <option key={user.id} value={user.id}>{user.full_name}</option>)}
-                        </select>
                     </div>
                     <div className="form-control">
                         <button type="submit">Submit</button>

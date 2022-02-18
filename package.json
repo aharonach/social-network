@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "npx babel --presets @babel/preset-react ui/src --out-dir ui/js",
-    "app": "node ./api/app.js"
+    "start": "node ./api/app.js"
   },
   "author": {
     "name": "Aharon Achildiev",

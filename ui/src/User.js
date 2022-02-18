@@ -29,7 +29,12 @@ class User extends React.Component {
     }
 
     render() {
-        return <h4>{this.state.user?.full_name}</h4>;
+        return (
+            <div className="user">
+                <span className="avatar"><i className="fa fa-user" aria-hidden="true"></i></span>
+                <h4>{this.state.user ? this.state.user.full_name : "Deleted User"}</h4>
+            </div>
+        );
     }
 }
 

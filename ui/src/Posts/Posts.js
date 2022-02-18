@@ -1,6 +1,7 @@
 import * as requests from '../helpers/requests.js';
 import Post from './Post.js';
 import NewPost from './NewPost.js';
+import Alert from '../Alert.js';
 
 class Posts extends React.Component {
     constructor(props) {
@@ -14,21 +15,18 @@ class Posts extends React.Component {
     }
 
     async fetch_and_update() {
-        const data = await this.fetch_posts();
+        const data = await requests.fetch_posts();
         this.props.update_list('posts', data);
     }
-
-    async fetch_posts() {
-        const data = await requests.do_get('/api/posts?orderby=datetime&order=desc');
-        return data?.error ? [] : data;
-	}
 
     render() {
         return (
             <>
                 <NewPost update={this.fetch_and_update} />
                 <div className="cards">
-                    {this.props.list.map(item => <Post key={item.id} post={item} user={this.props.user} update={this.fetch_and_update} /> )}
+                    {this.props.list.length > 0 ?
+                     this.props.list.map(item => <Post key={item.id} post={item} user={this.props.user} update={this.fetch_and_update} /> ) 
+                     : <Alert type="warning" message="No posts!" />}
                 </div>
             </>
         );

@@ -1,6 +1,7 @@
 import * as requests from '../helpers/requests.js';
 import Message from './Message.js';
 import NewMessage from './NewMessage.js';
+import Alert from '../Alert.js';
 
 class Messages extends React.Component {
     constructor(props) {
@@ -14,21 +15,18 @@ class Messages extends React.Component {
     }
 
     async fetch_and_update() {
-        const data = await this.fetch_messages();
+        const data = await requests.fetch_messages();
         this.props.update_list('messages', data);
     }
-
-    async fetch_messages() {
-        const data = await requests.do_get('/api/user/messages?orderby=datetime&order=desc');
-        return data?.error ? [] : data;
-	}
 
     render() {
         return (
             <>
-                <NewMessage token={this.props.token} update={this.fetch_and_update} />
+                <NewMessage update={this.fetch_and_update} />
                 <div className="cards">
-                    {this.props.list.map(item => <Message message={item} key={item.id} /> )}
+                    {this.props.list.length > 0 ?
+                     this.props.list.map(item => <Message message={item} key={item.id} /> ) 
+                     : <Alert type="warning" message="No messages!" />}
                 </div>
             </>
         );

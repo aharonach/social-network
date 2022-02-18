@@ -15,7 +15,7 @@ export async function do_post(url, data = {}) {
 }
 
 export async function do_get(url, data = {}) {
-    const final_url = data && Object.keys(data).length === 0 ? url : url + (new URLSearchParams(data).toString());
+    const final_url = data && Object.keys(data).length === 0 ? url : url + '?' + (new URLSearchParams(data).toString());
     const response = await fetch(final_url, {
         headers: {
             'Authorization': JSON.stringify({ token: cookies.get('token') })
@@ -38,9 +38,19 @@ export async function do_delete(url, data = {}) {
     return check_auth(result) && result;
 }
 
+export async function fetch_messages() {
+    const data = await do_get('/api/user/messages?orderby=datetime&order=desc');
+    return data?.error ? [] : data;
+}
+
+export async function fetch_posts() {
+    const data = await do_get('/api/posts?orderby=datetime&order=desc');
+    return data?.error ? [] : data;
+}
+
 function check_auth(response) {
     if (response?.error && response?.error.toLowerCase().includes('authentication failed')) {
-        throw new Error("Login required. please logout and login again.");
+        throw new Error("Token expired. please login again.");
     }
 
     return true;

@@ -364,7 +364,7 @@ function clear_expired_tokens() {
     });
 }
 
-function hash_password(password) {
+export function hash_password(password) {
     return crypto.createHash('sha256').update(salt_password(password)).digest('hex');
 }
 
