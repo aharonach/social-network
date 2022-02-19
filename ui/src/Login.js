@@ -62,7 +62,7 @@ class Login extends React.Component {
             this.setState({ error: json.error, success: '' });
         } else {
             this.setState({
-                message: 'User created!',
+                success: 'User created!',
                 error: '',
             });
         }

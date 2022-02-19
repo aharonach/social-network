@@ -214,6 +214,7 @@ select, input, textarea {
     padding: 8px 5px;
     min-width: 100px;
     border: 2px solid lightgray;
+    background-color: white;
     border-radius: 5px;
     outline: none;
     transition: border 0.25s ease, box-shadow 0.25s ease;
