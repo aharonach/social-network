@@ -23,6 +23,7 @@ class Messages extends React.Component {
         return (
             <>
                 <NewMessage update={this.fetch_and_update} />
+                <h2>Messages</h2>
                 <div className="cards">
                     {this.props.list.length > 0 ?
                      this.props.list.map(item => <Message message={item} key={item.id} /> ) 

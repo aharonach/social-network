@@ -44,10 +44,10 @@ class NewPost extends React.Component {
                 <Alert type={this.alert_type()} message={this.alert_message()} />
                 <form onSubmit={this.handle_post} className="form">
                     <div className="form-control">
-                        <label htmlFor="text">Text</label>
+                        <label htmlFor="text" className="invisible">Text</label>
                         <textarea onChange={this.handle_change} name="text" id="text" placeholder="Submit a new post" value={this.state.text}></textarea>
                     </div>
-                    <div className="form-control">
+                    <div className="form-control form-submit">
                         <button type="submit">Submit</button>
                     </div>
                 </form>

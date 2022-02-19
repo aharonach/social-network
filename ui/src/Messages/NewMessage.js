@@ -49,17 +49,15 @@ class NewMessage extends React.Component {
                 <Alert type={this.alert_type()} message={this.alert_message()} />
                 <form onSubmit={this.handle_post} className="form">
                     <div className="form-control">
-                        <label htmlFor="text">Text</label>
-                        <textarea onChange={this.handle_change} name="text" id="text" value={this.state.text}></textarea>
+                        <textarea onChange={this.handle_change} placeholder="Write your message" name="text" id="text" value={this.state.text}></textarea>
                     </div>
                     <div className="form-control">
-                        <label htmlFor="text">Choose a user</label>
                         <select name="user" onChange={this.handle_change} value={this.state.user}>
-                            <option value="0">Select...</option>
+                            <option value="0">Choose a user...</option>
                             {this.state.users.map(user => <option key={user.id} value={user.id}>{user.full_name}</option>)}
                         </select>
                     </div>
-                    <div className="form-control">
+                    <div className="form-control form-submit">
                         <button type="submit">Submit</button>
                     </div>
                 </form>

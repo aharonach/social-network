@@ -113,8 +113,10 @@ class User extends React.Component {
                             <option value="admin">Admin</option>
                         </select>
                     </div>
-                    <button type="submit" name="submit"><i className="fa fa-pencil" aria-hidden="true"></i> Update User</button>
-                    <button type="button" onClick={this.handle_delete} name="delete"><i className="fa fa-trash" aria-hidden="true"></i> Delete User</button>
+                    <div className="form-control form-submit">
+                        <button type="submit" name="submit"><i className="fa fa-pencil" aria-hidden="true"></i> Update User</button>
+                        <button type="button" onClick={this.handle_delete} name="delete"><i className="fa fa-trash" aria-hidden="true"></i> Delete User</button>
+                    </div>
                 </form>
             </div>
         );

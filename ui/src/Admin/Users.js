@@ -61,7 +61,7 @@ class Users extends React.Component {
         return (
             <>
                 <h2>Manage Users</h2>
-                <form onSubmit={this.handle_submit}>
+                <form onSubmit={this.handle_submit} className="inline">
                     <div className="form-control">
                         <label htmlFor="status">Status:</label>
                         <select name="status" onChange={this.handle_change} value={this.state.status}>
@@ -72,14 +72,16 @@ class Users extends React.Component {
                         </select>
                     </div>
                     <div className="form-control">
-                        <label htmlFor="date_from">Date from:</label>
+                        <label htmlFor="date_from">Created from:</label>
                         <input type="date" name="date_from" onChange={this.handle_change} value={this.state.date_from} />
                     </div>
                     <div className="form-control">
-                        <label htmlFor="date_to">Date to:</label>
+                        <label htmlFor="date_to">Created to:</label>
                         <input type="date" name="date_to" onChange={this.handle_change} value={this.state.date_to} />
                     </div>
-                    <button type="submit">Filter</button>
+                    <div className="form-control form-submit">
+                        <button type="submit">Filter</button>
+                    </div>
                 </form>
                 <div className="cards">
                     {this.state.users.length > 0 ? this.state.users.map(user => <User key={user.id} user={user} update={this.get_users} />) : <Alert type="warning" message="No users!" />}

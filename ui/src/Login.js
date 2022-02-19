@@ -10,7 +10,7 @@ class Login extends React.Component {
         password: '',
         full_name: '',
         error: '',
-        message: '',
+        success: '',
     }
 
     constructor(props) {
@@ -43,7 +43,7 @@ class Login extends React.Component {
         });
 
         if ( json?.error ) {
-            this.setState({ error: json.error, message: '' });
+            this.setState({ error: json.error, success: '' });
         } else {
             this.props.handle_login(json.token);
         }
@@ -59,7 +59,7 @@ class Login extends React.Component {
         });
 
         if ( json?.error ) {
-            this.setState({ error: json.error, message: '' });
+            this.setState({ error: json.error, success: '' });
         } else {
             this.setState({
                 message: 'User created!',
@@ -84,6 +84,7 @@ class Login extends React.Component {
         return (
             <>
                 <h2>Login</h2>
+                <Alert type={this.alert_type()} message={this.alert_message()} />
                 <form onSubmit={this.handle_login}>
                     <div className="form-control">
                         <label htmlFor="email">Email</label>
@@ -93,8 +94,8 @@ class Login extends React.Component {
                         <label htmlFor="password">Password</label>
                         <input onChange={this.handle_change} name="password" type="password" id="password" />
                     </div>
-                    <div className="form-control">
-                        <button type="submit">Login!</button>
+                    <div className="form-control form-submit">
+                        <button type="submit">Login</button>
                     </div>
                 </form>
             </>
@@ -105,6 +106,7 @@ class Login extends React.Component {
         return (
             <>
                 <h2>Register</h2>
+                <Alert type={this.alert_type()} message={this.alert_message()} />
                 <form onSubmit={this.handle_register}>
                     <div className="form-control">
                         <label htmlFor="email">Email</label>
@@ -118,8 +120,8 @@ class Login extends React.Component {
                         <label htmlFor="full_name">Full Name</label>
                         <input onChange={this.handle_change} name="full_name" type="text" id="full_name" />
                     </div>
-                    <div className="form-control">
-                        <button type="submit">Submit!</button>
+                    <div className="form-control form-submit">
+                        <button type="submit">Submit</button>
                     </div>
                 </form>
             </>
@@ -127,23 +129,33 @@ class Login extends React.Component {
     }
 
     render_link() {
-        return <a href="#" onClick={this.handle_click}>{this.state.login_or_register === 'login' ? 'Register' : 'Login'}</a>;
+        return (
+            <nav>
+                <ul>
+                    <li><a href="#" onClick={this.handle_click}>{this.state.login_or_register === 'login' ? 'Register' : 'Login'}</a></li>
+                </ul>
+            </nav>
+        );
+    }
+
+    alert_type() {
+        return this.state.error ? 'error' : this.state.success ? 'success' : 'error';
+    }
+
+    alert_message() {
+        return this.state[this.alert_type()];
     }
 
     render() {
-        const message_type = this.state.error ? 'error' : 'success';
-        const message = message_type === 'error' ? this.state.error : this.state.message;
-
         return (
             <>
                 <header>
                     <Logo />
                 </header>
                 <main>
-                    {this.render_link()}
                     <Alert type="error" message={this.props.error} />
-                    <Alert type={message_type} message={message} />
                     {this.is_login() ? this.render_login() : this.render_register()}
+                    {this.render_link()}
                 </main>
             </>
         );

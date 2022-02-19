@@ -40,14 +40,14 @@ class NewMessage extends React.Component {
     render() {
         return (
             <>
-                <Alert type={this.alert_type()} message={this.alert_message()} />
                 <h2>Message all users</h2>
+                <Alert type={this.alert_type()} message={this.alert_message()} />
                 <form onSubmit={this.handle_post} className="form">
                     <div className="form-control">
                         <label htmlFor="text">Text</label>
                         <textarea onChange={this.handle_change} name="text" id="text" value={this.state.text}></textarea>
                     </div>
-                    <div className="form-control">
+                    <div className="form-control form-submit">
                         <button type="submit">Submit</button>
                     </div>
                 </form>

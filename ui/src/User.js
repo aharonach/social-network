@@ -13,7 +13,10 @@ class User extends React.Component {
     }
 
     async componentDidMount() {
-        this.setState({ user: await this.get_user() });
+        const user = await this.get_user();
+        if ( user.id ) {
+            this.setState({ user: user });
+        }
     }
 
     async get_user() {

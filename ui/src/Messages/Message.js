@@ -8,8 +8,8 @@ class Message extends React.Component {
         return (
             <div className="card">
                 <User id={message.from_id} />
-                <p><span>{helpers.date(message.datetime)}</span></p>
-                <p>{message.text}</p>
+                <p className="date"><span>{helpers.date(message.datetime)}</span></p>
+                <p className="content">{message.text}</p>
             </div>
         );
     }

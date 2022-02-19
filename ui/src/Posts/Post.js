@@ -27,7 +27,7 @@ class Post extends React.Component {
             <>
             {this.check_permissions(user_id) && 
                 <div className="actions">
-                    <a href="#" className="delete" onClick={this.handle_delete}><i className="fa fa-trash" aria-hidden="true"></i> Delete</a>
+                    <button className="delete" onClick={this.handle_delete}><i className="fa fa-trash" aria-hidden="true"></i> Delete</button>
                 </div>
             }
             </>
@@ -40,9 +40,9 @@ class Post extends React.Component {
         return (
             <div className="card">
                 <User key={post.user_id} id={post.user_id} />
-                <p><span>{helpers.date(post.datetime)}</span></p>
-                <p>{post.text}</p>
-                {this.render_actions(post)}
+                <p className="date"><span>{helpers.date(post.datetime)}</span></p>
+                <p className="content">{post.text}</p>
+                {this.render_actions(post.user_id)}
             </div>
         );
     }

@@ -10,10 +10,10 @@ import Admin from './Admin/Admin.js';
 
 class App extends React.Component {
     components = [
-        { label: 'Home', component: Posts, list: 'posts', indicator: 'new_posts' },
-        { label: 'Messages', component: Messages, list: 'messages', indicator: 'new_messages' },
-        { label: 'About', component: About },
-        { label: 'Admin Dashboard', component: Admin, admin: true }
+        { label: 'Posts', component: Posts, list: 'posts', indicator: 'new_posts', icon: <i className="fa fa-file-text-o" aria-hidden="true"></i> },
+        { label: 'Messages', component: Messages, list: 'messages', indicator: 'new_messages', icon: <i className="fa fa-comments-o" aria-hidden="true"></i> },
+        { label: 'About', component: About, icon: <i className="fa fa-info-circle" aria-hidden="true"></i> },
+        { label: 'Admin Dashboard', component: Admin, admin: true, icon: <i className="fa fa-tachometer" aria-hidden="true"></i> }
     ]
 
     constructor(props) {
@@ -92,8 +92,8 @@ class App extends React.Component {
 
     set_intervals() {
         const intervals = [
-            setInterval(this.interval_callback, 5000, 'posts', 0),
-            setInterval(this.interval_callback, 5000, 'messages', 1),
+            setInterval(this.interval_callback, 2500, 'posts', 0),
+            setInterval(this.interval_callback, 2500, 'messages', 1),
         ];
 
         return intervals;
@@ -130,16 +130,18 @@ class App extends React.Component {
                     <>
                         <header>
                             <Logo />
-                            <NavBar
-                                className="main"
-                                user={this.state.user}
-                                indicator={this.get_indicator}
-                                update_page={this.update_page}
-                                handle_logout={this.handle_logout}
-                                current={this.state.current}
-                            >
-                                {this.components}
-                            </NavBar>
+                            <div className="navbar">
+                                <NavBar
+                                    className="main"
+                                    user={this.state.user}
+                                    indicator={this.get_indicator}
+                                    update_page={this.update_page}
+                                    handle_logout={this.handle_logout}
+                                    current={this.state.current}
+                                >
+                                    {this.components}
+                                </NavBar>
+                            </div>
                         </header>
                         <main>
                             <Component user={this.state.user} update_list={this.update_list} list={this.state[list]} />

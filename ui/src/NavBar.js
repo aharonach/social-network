@@ -28,13 +28,13 @@ class NavBar extends React.Component {
                         return (
                             <li key={index} className={this.props.current == index ? "current" : ""}>
                                 <a href="#" onClick={this.update_page} data-component={index}>
-                                    {item.label}
-                                    {this.props.indicator && this.props.indicator(item.indicator) && <span className="badge"><i className="fa fa-bell-o" aria-hidden="true"> New</i></span>}
+                                    {item.icon} {item.label}
+                                    {this.props.indicator && this.props.indicator(item.indicator) && <span className="badge"><i className="fa fa-bell-o" aria-hidden="true"></i></span>}
                                 </a>
                             </li>
                         )
                     })}
-                    {this.props.handle_logout && <li><a href="#" className="logout" onClick={this.logout}>Logout</a></li>}
+                    {this.props.handle_logout && <li><a href="#" className="logout" onClick={this.logout}><i className="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>}
                 </ul>
             </nav>
         );

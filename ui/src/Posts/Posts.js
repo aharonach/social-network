@@ -23,6 +23,7 @@ class Posts extends React.Component {
         return (
             <>
                 <NewPost update={this.fetch_and_update} />
+                <h2>Posts</h2>
                 <div className="cards">
                     {this.props.list.length > 0 ?
                      this.props.list.map(item => <Post key={item.id} post={item} user={this.props.user} update={this.fetch_and_update} /> ) 
